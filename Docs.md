@@ -1,59 +1,41 @@
 
-# Qwen UI — Detailed Documentation
 
-**Raw loader URL:**
+New raw URL used everywhere below:
 
 ```lua
-[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)
+https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua
 ```
-
-Qwen UI is a Lua interface library made to be loaded with one line, then built with simple calls like:
-
-- create window
-- create tab
-- create section
-- create button
-- create toggle
-- create slider
-- create dropdown
-- create notification
-
-The goal is: **easy to build, clean to read, better than basic UI libraries, and developer-controlled.**
 
 ---
 
-## 1. Basic Loader
+# Qwen UI — Documentation (build `0.4.0-vape-cols`)
 
-Every script starts like this:
+Qwen UI is a Lua interface library you load with one line, then build with simple calls: create a window, create a tab, create a section, add buttons / toggles / sliders / dropdowns / inputs / keybinds / labels / dividers / images / progress bars, fire notifications, lock with a key system, verify with a UNC badge, and switch themes / density / animation **live**.
+
+This build is the dense multi‑column **VAPE‑style** dashboard: near‑black panels, small drawn accent squares on every section and tab, warm amber highlight in the default theme, collapsible sections, hover accents, screen‑clamped dropdowns, a real top toolbar, top‑right toasts with a progress line, and full mobile / tablet / desktop reflow. The developer API is unchanged from the previous build, so old scripts keep working — you only swap the raw URL.
+
+---
+
+## 1. Loader
+
+Every script starts the same way:
 
 ```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 ```
 
-That returns the Qwen module.
-
-Then you create a window:
-
-```lua
-local Window = Qwen:CreateWindow({
-    Title = "My Hub"
-})
-```
-
-That is the minimum start.
+`Qwen` is the module. Build from it with `Qwen:CreateWindow(config)`.
 
 ---
 
 ## 2. Smallest Working Example
 
 ```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
-local Window = Qwen:CreateWindow({
-    Title = "Qwen Test"
-})
+local Window = Qwen:CreateWindow({ Title = "Qwen Test" })
 
 local MainTab = Window:CreateTab("Main")
 local MainSection = MainTab:CreateSection("Actions")
@@ -61,77 +43,58 @@ local MainSection = MainTab:CreateSection("Actions")
 MainSection:CreateButton({
     Name = "Click Me",
     Function = function()
-        Window:Notify({
-            Title = "Pressed",
-            Message = "Button worked.",
-            Type = "Success"
-        })
+        Window:Notify({ Title = "Pressed", Message = "Button worked.", Type = "Success" })
     end
 })
 ```
 
-This creates:
-
-- a window
-- one tab
-- one section
-- one button
-- one notification when clicked
+That gives you: a window, one tab, one section panel, one button row, and a toast on click.
 
 ---
 
-## 3. CreateWindow Config
-
-`Qwen:CreateWindow(config)` accepts a table.
-
-### Main config keys
+## 3. `CreateWindow` Config
 
 | Key | Type | Default | Meaning |
 |---|---|---|---|
-| `Title` | string | `"Qwen UI"` | Main window title |
-| `Subtitle` | string | `""` | Extra text shown beside title |
-| `Author` | string | `""` | Stored author name |
-| `Version` | string | library version | Stored version label |
-| `Theme` | string | `"VapeDark"` | Theme name |
-| `ThemeLock` | boolean | `false` | Locks theme from user changes |
-| `LockedTheme` | string | `nil` | Forces a locked theme |
-| `Device` | string | `"Auto"` | `Auto`, `Desktop`, `Tablet`, `Mobile` |
-| `Density` | string | `"Comfort"` | Stored density preference |
-| `Animation` | string | `"Smooth"` | Stored animation preference |
-| `Width` | number | `580` | Desktop/tablet window width |
-| `Height` | number | `390` | Desktop/tablet window height |
-| `Corner` | number | `8` | Corner roundness |
-| `Accent` | Color3 | `nil` | Overrides accent color |
-| `Settings` | table | `{ Enabled = true }` | Enables settings tab |
-| `Stats` | table | `{ FPS = false }` | FPS chip settings |
-| `Notifications` | table | enabled | Toast notification settings |
-| `KeySystem` | table | disabled | Key lock screen settings |
-| `UNC` | table | disabled | Verification badge settings |
+| `Title` | string | `"Qwen UI"` | Header title |
+| `Subtitle` | string | `""` | Small line under the title |
+| `Author` | string | `""` | Stored metadata |
+| `Version` | string | build version | Stored metadata |
+| `Theme` | string | `"VapeDark"` | Starting theme name |
+| `ThemeLock` | boolean | `false` | Prevents theme changes (hides the cycle ring + locks the dropdown) |
+| `LockedTheme` | string | `nil` | Forces a locked theme; implies `ThemeLock = true` |
+| `Device` | string | `"Auto"` | `Auto` / `Desktop` / `Tablet` / `Mobile` |
+| `Density` | string | `"Comfort"` | `Compact` / `Comfort` / `Cozy` / `MobileTouch` |
+| `Animation` | string | `"Smooth"` | `Full` / `Smooth` / `Reduced` / `Off` / `Auto` |
+| `Width` | number | `620` | Desktop/tablet window width |
+| `Height` | number | `420` | Desktop/tablet window height |
+| `Corner` | number | `6` | Corner roundness (clamped to 10) |
+| `Accent` | Color3 | `nil` | Overrides the theme accent + active tint |
+| `Watermark` | boolean | `false` | Shows a small `Qwen UI` label bottom‑right |
+| `Settings` | table | `{ Enabled = true }` | Adds the auto Settings tab |
+| `Stats` | table | `{ FPS = false, UpdateRate = 0.5 }` | FPS chip |
+| `Notifications` | table | `{ Enabled = true, Duration = 4, MaxVisible = 4 }` | Toasts |
+| `KeySystem` | table | disabled | Lock screen |
+| `UNC` | table | disabled | Verification badge |
+| `Permissions` | table | `{}` | Reserved for future per‑setting locks |
 
-### Basic window example
+Full example:
 
 ```lua
 local Window = Qwen:CreateWindow({
     Title = "Qwen Hub",
-    Subtitle = "Beta",
+    Subtitle = "beta",
     Author = "grammerp54-cloud",
     Theme = "VapeDark",
     Device = "Auto",
-    Width = 580,
-    Height = 390,
-    Corner = 8,
-    Settings = {
-        Enabled = true
-    },
-    Stats = {
-        FPS = false,
-        UpdateRate = 0.5
-    },
-    Notifications = {
-        Enabled = true,
-        Duration = 4,
-        MaxVisible = 4
-    }
+    Density = "Comfort",
+    Width = 640,
+    Height = 430,
+    Corner = 6,
+    Watermark = false,
+    Settings = { Enabled = true },
+    Stats = { FPS = true, UpdateRate = 0.5 },
+    Notifications = { Enabled = true, Duration = 4, MaxVisible = 4 },
 })
 ```
 
@@ -139,868 +102,552 @@ local Window = Qwen:CreateWindow({
 
 ## 4. Themes
 
-Current built-in themes:
+Nine built‑in themes. The default `VapeDark` now uses a warm **amber** highlight (matching the reference dashboard), not generic purple.
 
-| Theme name | Style |
+| Theme | Look |
 |---|---|
-| `VapeDark` | Dark purple vape-style dashboard |
-| `AcrylicBlue` | Blue glass/dark acrylic style |
-| `MidnightPurple` | Deep purple night theme |
-| `ObsidianBlack` | Black minimal theme |
-| `NeonViolet` | Bright violet neon theme |
-| `CrimsonDark` | Red/dark theme |
-| `EmeraldNight` | Green/dark theme |
-| `LightPorcelain` | Light theme |
-| `HighContrast` | Strong contrast theme |
+| `VapeDark` | Near‑black + amber accent (default) |
+| `AcrylicBlue` | Dark navy + cyan‑blue glass |
+| `MidnightPurple` | Deep indigo + soft violet |
+| `ObsidianBlack` | Pure black + white accent |
+| `NeonViolet` | Black‑violet + magenta |
+| `CrimsonDark` | Charcoal + red |
+| `EmeraldNight` | Dark green + mint |
+| `LightPorcelain` | Light mode + violet |
+| `HighContrast` | Black + yellow, sharp borders |
 
-### Use a theme
+Use one:
 
 ```lua
-local Window = Qwen:CreateWindow({
-    Title = "Blue Hub",
-    Theme = "AcrylicBlue"
-})
+local Window = Qwen:CreateWindow({ Title = "Blue Hub", Theme = "AcrylicBlue" })
 ```
 
-### Custom accent color
+Custom accent override (keeps the theme but swaps the highlight color):
 
 ```lua
 local Window = Qwen:CreateWindow({
-    Title = "Custom Accent",
     Theme = "VapeDark",
-    Accent = Color3.fromRGB(255, 120, 40)
+    Accent = Color3.fromRGB(255, 120, 40),
 })
 ```
 
-### Lock the theme
+### Locking the theme
 
-To stop users from changing the theme in settings:
+Stop users from changing it (the toolbar cycle‑ring disappears and the Settings theme dropdown is replaced by a locked note):
 
 ```lua
-local Window = Qwen:CreateWindow({
-    Title = "Locked Theme Hub",
-    Theme = "AcrylicBlue",
-    ThemeLock = true
-})
+local Window = Qwen:CreateWindow({ Title = "Locked Hub", Theme = "AcrylicBlue", ThemeLock = true })
 ```
 
-Or force a locked theme directly:
+Or force a locked theme in one key:
 
 ```lua
-local Window = Qwen:CreateWindow({
-    Title = "Locked Theme Hub",
-    LockedTheme = "MidnightPurple"
-})
+local Window = Qwen:CreateWindow({ Title = "Locked Hub", LockedTheme = "MidnightPurple" })
 ```
 
-Important: in the current raw build, theme locking is done with `ThemeLock = true` or `LockedTheme = "ThemeName"`.
+`LockedTheme` automatically sets `ThemeLock = true`.
 
-If the theme is locked, the settings tab will show:
+---
 
-```text
-Theme changes are locked by the developer.
+## 5. Live Theme / Density / Animation Switching
+
+This is the headline upgrade of this build. Changing the theme or density **rebuilds the whole shell instantly** — header, sidebar, panels, section frames, tab buttons, toasts, key screen, and FPS chip all recolour or resize on the spot. No more "saved for next reload".
+
+Three new window methods drive it:
+
+```lua
+Window:SetTheme("NeonViolet")     -- recolour everything live
+Window:GetTheme()                 -- returns current theme name
+Window:SetDensity("Compact")      -- resize rows/columns live
+Window:SetAnimation("Reduced")    -- stored + triggers a rebuild
+```
+
+The Settings tab wires these to real dropdowns, so end users can switch live too (unless the theme is locked).
+
+> **Important — keep your custom rows across a switch (recommended 6‑line patch).**
+> In the raw file as‑is, a live theme/density change rebuilds the section *panels* but does **not** automatically replay the buttons/toggles/sliders you added inside them, so custom rows would vanish after a switch. To make every row survive (they reload from your original config, resetting to their `Default` value), paste this block into `BuildSection`, **right before the final `return sectionObj`**:
+>
+> ```lua
+> local prior = secRec.widgets
+> secRec.widgets = {}
+> for _, rec in ipairs(prior) do
+>     add(rec.kind, rec.cfg)
+> end
+> ```
+>
+> With it applied, live switching preserves your entire UI structure. (Runtime drag/flip values are not carried across a rebuild in this build — rows return to their configured `Default`.) If you skip the patch, see Troubleshooting §"rows disappear".
+
+---
+
+## 6. Device Modes & Layout Reflow
+
+`Device = "Auto"` detects touch / keyboard / screen size and picks a layout. Force one with `Desktop` / `Tablet` / `Mobile`.
+
+| Mode | Layout |
+|---|---|
+| **Desktop** | Centered draggable window, left tab rail, sections **wrap into multiple columns** (the VAPE look) |
+| **Tablet** | Same as desktop but wider section columns + bigger touch rows |
+| **Mobile** | Full‑screen window, **bottom tab rail**, sections stack single‑column full‑width, larger taps |
+
+```lua
+local Window = Qwen:CreateWindow({ Title = "Mobile Hub", Device = "Mobile", Theme = "MidnightPurple" })
+```
+
+The toolbar's three‑line button toggles the tab rail visibility (handy on desktop/tablet to give content more room; on mobile it hides the bottom rail, so use sparingly).
+
+---
+
+## 7. Density
+
+Density changes row height, font size, padding, section width, header height, and gaps. On mobile it is forced to touch sizes regardless.
+
+| Density | Row | Font | Section width | Feel |
+|---|---|---|---|---|
+| `Compact` | 26 | 12 | 196 | Dense, many columns |
+| `Comfort` | 30 | 13 | 214 | Balanced (default) |
+| `Cozy` | 36 | 14 | 232 | Roomy, fewer columns |
+| `MobileTouch` | 46 | 15 | full‑width | Big tap targets |
+
+```lua
+local Window = Qwen:CreateWindow({ Density = "Compact" })
+Window:SetDensity("Cozy")  -- live
 ```
 
 ---
 
-## 5. Device Modes
-
-Qwen UI can adapt to device type.
-
-```lua
-Device = "Auto"
-```
-
-Auto detects:
-
-- mobile
-- tablet
-- desktop
-
-You can force one:
-
-```lua
-Device = "Mobile"
-```
-
-or:
-
-```lua
-Device = "Tablet"
-```
-
-or:
-
-```lua
-Device = "Desktop"
-```
-
-### Mobile mode
-
-Mobile mode uses:
-
-- full-screen layout
-- bottom tab bar
-- larger touch rows
-- simpler spacing
-
-Example:
-
-```lua
-local Window = Qwen:CreateWindow({
-    Title = "Mobile Hub",
-    Device = "Mobile",
-    Theme = "VapeDark"
-})
-```
-
-### Desktop mode
-
-Desktop mode uses:
-
-- centered window
-- left sidebar tabs
-- draggable title area
-- compact rows
-
-Example:
-
-```lua
-local Window = Qwen:CreateWindow({
-    Title = "Desktop Hub",
-    Device = "Desktop",
-    Width = 620,
-    Height = 420
-})
-```
-
----
-
-## 6. Creating Tabs
-
-Tabs are created from the window:
+## 8. Tabs
 
 ```lua
 local MainTab = Window:CreateTab("Main")
 local AimTab = Window:CreateTab("Aim")
 local VisualTab = Window:CreateTab("Visuals")
-local SettingsTab = Window:CreateTab("Extras")
 ```
 
-The first tab is selected automatically.
-
-### Tab with icon placeholder
-
-The current build accepts an icon argument, but icons are not rendered in the tab button yet:
-
-```lua
-local MainTab = Window:CreateTab("Main", "rbxassetid://0")
-```
-
-For now, use the name only if you want clean results:
-
-```lua
-local MainTab = Window:CreateTab("Main")
-```
+The first tab is selected automatically. Each tab button shows a small drawn accent square + label + an active indicator bar (left bar on desktop, bottom bar on mobile). The second argument of `CreateTab(name, icon)` is accepted but **not rendered** yet — icons are auto‑drawn squares, so passing an asset id does nothing visually in this build.
 
 ---
 
-## 7. Creating Sections
-
-Sections are created inside tabs:
+## 9. Sections (collapsible, multi‑column)
 
 ```lua
 local MainSection = MainTab:CreateSection("Main Options")
 local AimSection = AimTab:CreateSection("Aim Settings")
-local VisualSection = VisualTab:CreateSection("Visual Effects")
 ```
 
-Each section is a rounded panel with a header.
+Each section is a rounded panel with a header containing a tiny accent square, the title, and a chevron. **Click the header to collapse/expand** it (chevron flips `▾` ↔ `▸`). On desktop/tablet, sections flow horizontally and wrap into columns like the reference image; on mobile they stack.
+
+New section method:
+
+```lua
+MainSection:SetCollapsed(true)   -- collapse
+MainSection:SetCollapsed(false)  -- expand
+```
 
 ---
 
-## 8. Buttons
-
-Buttons are created inside a section.
-
-### Simple button
+## 10. Buttons
 
 ```lua
 MainSection:CreateButton({
     Name = "Load Profile",
     Function = function()
-        -- developer code here
+        -- developer code
     end
 })
 ```
 
-### Button with description
+With description (taller row, muted sub‑line):
 
 ```lua
 MainSection:CreateButton({
     Name = "Reset Settings",
     Description = "Restores default values.",
-    Function = function()
-        -- developer code here
-    end
+    Function = function() end
 })
 ```
 
-### Button that copies text
+Copy text on click:
 
 ```lua
 MainSection:CreateButton({
     Name = "Copy Key",
     CopyText = "DEMO-KEY-1234",
     Function = function()
-        Window:Notify({
-            Title = "Copied",
-            Message = "Key copied to clipboard.",
-            Type = "Success"
-        })
+        Window:Notify({ Title = "Copied", Message = "Key copied.", Type = "Success" })
     end
 })
 ```
 
-### Button that copies a link
+Copy a link / open a URL‑style payload:
 
 ```lua
 MainSection:CreateButton({
     Name = "Get Key",
     CopyText = "https://your-key-link_here",
-    Function = function()
-        Window:Notify({
-            Title = "Link copied",
-            Message = "Open it in your browser.",
-            Type = "Info"
-        })
-    end
 })
 ```
 
-### Button with notification
+Inline notification on click (no `Function` needed):
 
 ```lua
 MainSection:CreateButton({
     Name = "Apply",
-    Notify = {
-        Title = "Applied",
-        Message = "Settings saved.",
-        Type = "Success"
-    }
+    Notify = { Title = "Applied", Message = "Saved.", Type = "Success" },
 })
 ```
 
-### Disabled button
+States:
 
 ```lua
-MainSection:CreateButton({
-    Name = "Coming Soon",
-    Disabled = true
-})
+MainSection:CreateButton({ Name = "Coming Soon", Disabled = true })
+MainSection:CreateButton({ Name = "Admin Only", Locked = true })
+MainSection:CreateButton({ Name = "Hidden Debug", Hidden = true })
 ```
 
-### Locked button
+New visual detail: hovering a button fades in a thin **accent line on the left edge** and lifts the row colour. Locked rows get a border + muted text.
+
+Return object:
 
 ```lua
-MainSection:CreateButton({
-    Name = "Admin Only",
-    Locked = true
-})
-```
-
-### Hidden button
-
-```lua
-MainSection:CreateButton({
-    Name = "Hidden Debug",
-    Hidden = true,
-    Function = function()
-        -- still exists internally, but not shown
-    end
-})
-```
-
-### Button return object
-
-```lua
-local MyButton = MainSection:CreateButton({
-    Name = "Start"
-})
-
+local MyButton = MainSection:CreateButton({ Name = "Start" })
 MyButton:SetText("Started")
 MyButton:SetDisabled(true)
 ```
 
-Button methods:
-
 | Method | Meaning |
 |---|---|
-| `SetText(text)` | Changes button text |
-| `SetDisabled(boolean)` | Disables or enables button |
+| `SetText(text)` | Change label |
+| `SetDisabled(bool)` | Enable/disable |
 
 ---
 
-## 9. Toggles
-
-Toggles are on/off switches.
-
-### Simple toggle
+## 11. Toggles
 
 ```lua
 MainSection:CreateToggle({
     Name = "Enable ESP",
     Default = false,
     Function = function(state)
-        -- state is true or false
+        -- state is true/false
     end
 })
 ```
 
-### Toggle with description
+With description:
 
 ```lua
 MainSection:CreateToggle({
     Name = "Silent Mode",
     Description = "Hide activity status.",
     Default = true,
-    Function = function(state)
-        -- state is true or false
-    end
+    Function = function(state) end
 })
 ```
 
-### Locked toggle
+Locked / hidden:
 
 ```lua
-MainSection:CreateToggle({
-    Name = "Premium Feature",
-    Default = false,
-    Locked = true
-})
+MainSection:CreateToggle({ Name = "Premium Feature", Locked = true })
+MainSection:CreateToggle({ Name = "Internal Flag", Hidden = true })
 ```
 
-### Hidden toggle
+New visual detail: when **ON**, the whole row tints with a darkened accent (`RowActive`) and the switch glows the theme accent — exactly like the highlighted rows in the reference image.
+
+Return object:
 
 ```lua
-MainSection:CreateToggle({
-    Name = "Internal Flag",
-    Default = false,
-    Hidden = true
-})
-```
-
-### Toggle return object
-
-```lua
-local EspToggle = MainSection:CreateToggle({
-    Name = "Enable ESP",
-    Default = false
-})
-
+local EspToggle = MainSection:CreateToggle({ Name = "Enable ESP", Default = false })
 EspToggle:Set(true)
-local currentState = EspToggle:Get()
+local on = EspToggle:Get()
 ```
-
-Toggle methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(boolean)` | Sets toggle on/off |
-| `Get()` | Returns current state |
+| `Set(bool)` | Set state |
+| `Get()` | Current state |
 
 ---
 
-## 10. Sliders
-
-Sliders are draggable value controls.
-
-### Simple slider
+## 12. Sliders
 
 ```lua
 MainSection:CreateSlider({
     Name = "FOV",
-    Min = 0,
-    Max = 120,
-    Step = 1,
-    Default = 60,
-    Function = function(value)
-        -- value is a number
-    end
+    Min = 0, Max = 120, Step = 1, Default = 60,
+    Function = function(value) end
 })
 ```
 
-### Slider with suffix
+Suffix:
 
 ```lua
 MainSection:CreateSlider({
-    Name = "Health",
-    Min = 0,
-    Max = 100,
-    Step = 1,
-    Default = 80,
-    Suffix = "%",
-    Function = function(value)
-        -- value is a number
-    end
+    Name = "Health", Min = 0, Max = 100, Step = 1, Default = 80, Suffix = "%",
+    Function = function(value) end
 })
 ```
 
-### Decimal slider
+Decimals:
 
 ```lua
 MainSection:CreateSlider({
-    Name = "Smoothness",
-    Min = 0.1,
-    Max = 5,
-    Step = 0.1,
-    Decimals = 1,
-    Default = 1,
-    Function = function(value)
-        -- value can be decimal
-    end
+    Name = "Smoothness", Min = 0.1, Max = 5, Step = 0.1, Decimals = 1, Default = 1,
+    Function = function(value) end
 })
 ```
 
-### Slider with description
+With description (taller row):
 
 ```lua
 MainSection:CreateSlider({
     Name = "Distance",
     Description = "Maximum target distance.",
-    Min = 10,
-    Max = 1000,
-    Step = 10,
-    Default = 100,
-    Suffix = " studs",
-    Function = function(value)
-        -- value is a number
-    end
+    Min = 10, Max = 1000, Step = 10, Default = 100, Suffix = " studs",
+    Function = function(value) end
 })
 ```
 
-### Slider return object
+Return object:
 
 ```lua
-local FovSlider = MainSection:CreateSlider({
-    Name = "FOV",
-    Min = 0,
-    Max = 120,
-    Default = 60
-})
-
+local FovSlider = MainSection:CreateSlider({ Name = "FOV", Min = 0, Max = 120, Default = 60 })
 FovSlider:Set(90)
-local currentFov = FovSlider:Get()
+local fov = FovSlider:Get()
 ```
-
-Slider methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(number)` | Sets slider value |
-| `Get()` | Returns current value |
+| `Set(number)` | Set value (snaps to step) |
+| `Get()` | Current value |
 
 ---
 
-## 11. Dropdowns
-
-Dropdowns let users choose from a list.
-
-### Simple dropdown
+## 13. Dropdowns
 
 ```lua
 MainSection:CreateDropdown({
     Name = "Mode",
     Values = { "Normal", "Fast", "Slow" },
     Default = "Normal",
-    Function = function(value)
-        -- value is the selected option
-    end
+    Function = function(value) end
 })
 ```
 
-### Dropdown with numbers
+Numbers work too:
 
 ```lua
-MainSection:CreateDropdown({
-    Name = "Team Color",
-    Values = { 1, 2, 3, 4 },
-    Default = 1,
-    Function = function(value)
-        -- value can be number
-    end
-})
+MainSection:CreateDropdown({ Name = "Team", Values = { 1, 2, 3, 4 }, Default = 1, Function = function(v) end })
 ```
 
-### Dropdown return object
+New behaviour: the popup is **clamped to the screen** — it never flies off the edge, and if the row is near the bottom the list flips *above* the row. The currently selected option is highlighted with the accent tint inside the list.
+
+Return object:
 
 ```lua
-local ModeDropdown = MainSection:CreateDropdown({
-    Name = "Mode",
-    Values = { "A", "B", "C" },
-    Default = "A"
-})
-
+local ModeDropdown = MainSection:CreateDropdown({ Name = "Mode", Values = { "A", "B" }, Default = "A" })
 ModeDropdown:Set("B")
-local currentMode = ModeDropdown:Get()
+local mode = ModeDropdown:Get()
 ```
-
-Dropdown methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(value)` | Sets selected value |
-| `Get()` | Returns selected value |
+| `Set(value)` | Select option |
+| `Get()` | Current option |
 
 ---
 
-## 12. Inputs
-
-Inputs are text boxes.
-
-### Text input
+## 14. Inputs
 
 ```lua
 MainSection:CreateInput({
     Name = "Username",
     Placeholder = "Enter name...",
     Default = "",
-    Function = function(value)
-        -- value is text
-    end
+    Function = function(value) end
 })
 ```
 
-### Number input
+Number input with clamping:
 
 ```lua
 MainSection:CreateInput({
-    Name = "Amount",
-    Type = "Number",
-    Placeholder = "0",
-    Default = 1,
-    Min = 1,
-    Max = 100,
-    Function = function(value)
-        -- value is number
-    end
+    Name = "Amount", Type = "Number", Placeholder = "0", Default = 1, Min = 1, Max = 100,
+    Function = function(value) end
 })
 ```
 
-### Max length input
+Max length:
 
 ```lua
-MainSection:CreateInput({
-    Name = "Code",
-    Placeholder = "Enter code",
-    MaxLength = 12,
-    Function = function(value)
-        -- value is text
-    end
-})
+MainSection:CreateInput({ Name = "Code", Placeholder = "Enter code", MaxLength = 12, Function = function(v) end })
 ```
 
-### Input return object
+Return object:
 
 ```lua
-local NameInput = MainSection:CreateInput({
-    Name = "Profile",
-    Default = "Player"
-})
-
+local NameInput = MainSection:CreateInput({ Name = "Profile", Default = "Player" })
 NameInput:Set("NewName")
-local currentName = NameInput:Get()
+local name = NameInput:Get()
 ```
-
-Input methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(text)` | Sets input text |
-| `Get()` | Returns input text |
+| `Set(text)` | Set text |
+| `Get()` | Current text |
 
 ---
 
-## 13. Keybinds
-
-Keybinds capture a keyboard key or mouse input.
-
-### Simple keybind
+## 15. Keybinds
 
 ```lua
 MainSection:CreateKeybind({
     Name = "Menu Key",
     Default = Enum.KeyCode.RightControl,
-    Function = function(binding)
-        -- binding is the captured key/input
-    end
+    Function = function(binding) end
 })
 ```
 
-### Keybind that closes window
+Click the bind button → it shows `...` → press any key/mouse button → it captures and fires `Function` on every match.
+
+Return object:
 
 ```lua
-MainSection:CreateKeybind({
-    Name = "Close Key",
-    Default = Enum.KeyCode.End,
-    Function = function(binding)
-        if binding == Enum.KeyCode.End then
-            Window:Close()
-        end
-    end
-})
-```
-
-### Keybind return object
-
-```lua
-local MenuKey = MainSection:CreateKeybind({
-    Name = "Menu Key",
-    Default = Enum.KeyCode.RightControl
-})
-
+local MenuKey = MainSection:CreateKeybind({ Name = "Menu Key", Default = Enum.KeyCode.RightControl })
 MenuKey:Set(Enum.KeyCode.K)
-local currentBinding = MenuKey:Get()
+local binding = MenuKey:Get()
 ```
-
-Keybind methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(binding)` | Sets keybind |
-| `Get()` | Returns current binding |
+| `Set(binding)` | Set binding |
+| `Get()` | Current binding |
 
 ---
 
-## 14. Labels
-
-Labels are text blocks.
-
-### Muted label
+## 16. Labels
 
 ```lua
-MainSection:CreateLabel({
-    Text = "This is a note.",
-    Variant = "Muted"
-})
+MainSection:CreateLabel({ Text = "This is a note.", Variant = "Muted" })
 ```
 
-### Accent label
+Variants map to theme colours:
 
-```lua
-MainSection:CreateLabel({
-    Text = "Important",
-    Variant = "Accent"
-})
-```
-
-### Success label
-
-```lua
-MainSection:CreateLabel({
-    Text = "All systems normal.",
-    Variant = "Success"
-})
-```
-
-Available variants:
-
-| Variant | Color |
+| Variant | Colour |
 |---|---|
-| `Text` | Main text color |
+| `Text` | Main text |
 | `Muted` | Dim text |
 | `Accent` | Theme accent |
 | `Success` | Green |
-| `Warning` | Yellow/orange |
+| `Warning` | Amber |
 | `Danger` | Red |
 | `Info` | Blue |
 
+Optional `Font` and `Size` overrides:
+
+```lua
+MainSection:CreateLabel({ Text = "Important", Variant = "Accent", Size = 13, Font = Enum.Font.GothamBold })
+```
+
 ---
 
-## 15. Dividers
-
-Creates a thin line.
+## 17. Dividers
 
 ```lua
 MainSection:CreateDivider()
 ```
 
-Useful between groups.
-
-Example:
-
-```lua
-MainSection:CreateToggle({
-    Name = "Feature A"
-})
-
-MainSection:CreateDivider()
-
-MainSection:CreateToggle({
-    Name = "Feature B"
-})
-```
+A thin inset line — use between grouped rows.
 
 ---
 
-## 16. Images
+## 18. Images
 
-Images support:
-
-- Roblox asset ID as number
-- Roblox asset ID as string
-- `rbxassetid://` string
-- HTTP/HTTPS URL
-- `nil` for blank
-
-### Asset ID image
+Accepts a numeric asset id, an asset string, an `rbxassetid://` string, an `http(s)://` URL, or `nil`.
 
 ```lua
-MainSection:CreateImage({
-    Source = 123456789,
-    Width = 140,
-    Height = 90
-})
+MainSection:CreateImage({ Source = 123456789, Width = 150, Height = 90 })
+MainSection:CreateImage({ Source = "rbxassetid://123456789", Width = 150, Height = 90 })
+MainSection:CreateImage({ Source = "https://example.com/image.png", Width = 160, Height = 100 })
 ```
 
-### Asset string image
+Scale type:
 
 ```lua
-MainSection:CreateImage({
-    Source = "rbxassetid://123456789",
-    Width = 140,
-    Height = 90
-})
+MainSection:CreateImage({ Source = 123456789, Width = 160, Height = 100, ScaleType = Enum.ScaleType.Fit })
 ```
-
-### URL image
-
-```lua
-MainSection:CreateImage({
-    Source = "https://example.com/image.png",
-    Width = 160,
-    Height = 100
-})
-```
-
-### Scale types
-
-```lua
-MainSection:CreateImage({
-    Source = 123456789,
-    Width = 160,
-    Height = 100,
-    ScaleType = Enum.ScaleType.Fit
-})
-```
-
-Common scale types:
 
 | ScaleType | Meaning |
 |---|---|
-| `Enum.ScaleType.Fit` | Keeps ratio, fits inside |
-| `Enum.ScaleType.Stretch` | Stretches to size |
-| `Enum.ScaleType.Tile` | Repeats image |
-| `Enum.ScaleType.Crop` | Cuts overflow |
+| `Fit` | Keep ratio, fit inside |
+| `Stretch` | Stretch to size |
+| `Tile` | Repeat |
+| `Crop` | Cut overflow |
 
 ---
 
-## 17. Progress Bars
+## 19. Progress Bars
 
-Progress bars show 0 to 1 value.
-
-### Simple progress
+Value is `0`–`1`.
 
 ```lua
-local LoadBar = MainSection:CreateProgress({
-    Name = "Loading",
-    Value = 0.25
-})
+local Bar = MainSection:CreateProgress({ Name = "Loading", Value = 0.25 })
 ```
 
-### Update progress with button
+Drive it with buttons:
 
 ```lua
-local LoadBar = MainSection:CreateProgress({
-    Name = "Loading",
-    Value = 0
-})
-
-MainSection:CreateButton({
-    Name = "+10%",
-    Function = function()
-        LoadBar:Set(math.min(LoadBar:Get() + 0.1, 1))
-    end
-})
-
-MainSection:CreateButton({
-    Name = "Reset",
-    Function = function()
-        LoadBar:Set(0)
-    end
-})
+local Bar = MainSection:CreateProgress({ Name = "Download", Value = 0 })
+MainSection:CreateButton({ Name = "+20%", Function = function() Bar:Set(math.min(Bar:Get() + 0.2, 1)) end })
+MainSection:CreateButton({ Name = "Reset", Function = function() Bar:Set(0) end })
 ```
-
-Progress methods:
 
 | Method | Meaning |
 |---|---|
-| `Set(number)` | Sets progress from 0 to 1 |
-| `Get()` | Returns current progress |
+| `Set(number)` | Set 0–1 (tweened) |
+| `Get()` | Current value |
 
 ---
 
-## 18. Notifications
+## 20. Notifications
 
-Notifications are created from the window:
+Toasts appear **top‑right** with a coloured left bar, a title, an optional message, a close `✕`, and a shrinking progress line. They follow the live theme.
 
 ```lua
-Window:Notify({
-    Title = "Saved",
-    Message = "Your settings were saved.",
-    Type = "Success"
-})
+Window:Notify({ Title = "Saved", Message = "Settings stored.", Type = "Success" })
 ```
 
-### Notification types
-
-| Type | Use |
+| Type | Colour |
 |---|---|
-| `Info` | Normal message |
-| `Success` | Worked |
-| `Warning` | Careful |
-| `Danger` | Failed/error |
+| `Info` | Blue |
+| `Success` | Green |
+| `Warning` | Amber |
+| `Danger` | Red |
 
-### Custom duration
+Custom duration (`0` = sticky until closed):
 
 ```lua
-Window:Notify({
-    Title = "Wait",
-    Message = "This stays longer.",
-    Type = "Warning",
-    Duration = 8
-})
+Window:Notify({ Title = "Hold", Message = "Stays longer.", Type = "Warning", Duration = 8 })
 ```
 
-### Notification history
-
-The bell button opens a history panel.
-
-You can also read history in code:
+Read history in code:
 
 ```lua
 local history = Window:GetHistory()
 ```
 
-`history` is a table of notification records.
+The toolbar speech‑bubble button opens a **notification history panel** (search‑free but full list, newest first, with type tags). New window method to open it programmatically:
+
+```lua
+Window:OpenHistory()
+```
 
 ---
 
-## 19. Key System
+## 21. Key System
 
-The key system shows a lock screen before the main UI.
+Shows a themed lock screen (with a drawn `Q` brand square) before the main UI. Correct key opens; wrong key burns an attempt; at zero a cooldown runs, then attempts reset. `Enter` also submits. Copy/Help buttons copy your safe strings.
 
-### Static key
+Static key:
 
 ```lua
 local Window = Qwen:CreateWindow({
@@ -1014,20 +661,15 @@ local Window = Qwen:CreateWindow({
         Attempts = 5,
         Cooldown = 30,
         CopyText = "https://your-key-link_here",
-        HelpText = "https://your-help-link_here"
-    }
+        HelpText = "https://your-help-link_here",
+    },
 })
 ```
 
-### Callback key validation
-
-Better for developers who want custom logic:
+Callback validation (recommended for custom logic):
 
 ```lua
-local ValidKeys = {
-    ["KEY-ABC"] = true,
-    ["KEY-XYZ"] = true
-}
+local ValidKeys = { ["KEY-ABC"] = true, ["KEY-XYZ"] = true }
 
 local Window = Qwen:CreateWindow({
     Title = "Protected Hub",
@@ -1038,304 +680,133 @@ local Window = Qwen:CreateWindow({
         Placeholder = "KEY",
         Attempts = 3,
         Cooldown = 20,
-        Function = function(input)
-            return ValidKeys[input] == true
-        end
-    }
+        Function = function(input) return ValidKeys[input] == true end,
+    },
 })
 ```
 
-### Unlimited attempts
+Unlimited attempts:
 
 ```lua
-Attempts = 0
+KeySystem = { Enabled = true, Key = "FREE-KEY", Attempts = 0, Cooldown = 10 }
 ```
 
-Example:
-
-```lua
-KeySystem = {
-    Enabled = true,
-    Key = "FREE-KEY",
-    Attempts = 0,
-    Cooldown = 10
-}
-```
-
-### Key system behavior
-
-If key system is enabled:
-
-- main window is hidden
-- lock screen appears
-- user enters key
-- correct key opens UI
-- wrong key reduces attempts
-- when attempts reach zero, cooldown starts
-- after cooldown, attempts reset
-
-### Relock button
-
-If settings are enabled and key system is enabled, the settings tab gets:
-
-```text
-Relock UI
-```
-
-This closes the UI and shows the lock screen again.
+If Settings is enabled, the Settings tab gains a **Relock UI** button that closes the hub and re‑shows the lock screen.
 
 ---
 
-## 20. UNC Verification Panel
+## 22. UNC Verification Badge
 
-UNC is a neutral verification badge. It can check a value or run a developer callback.
+A neutral verification chip in the header (`UNC OK` / `UNC FAIL` / `UNC --`). It checks a value or runs your callback. Not a bypass system.
 
-### Simple UNC
+Simple:
 
 ```lua
 local Window = Qwen:CreateWindow({
     Title = "Verified Hub",
-    UNC = {
-        Enabled = true,
-        Auto = true,
-        Value = LocalPlayer.Name
-    }
+    UNC = { Enabled = true, Auto = true, Value = LocalPlayer.Name },
 })
 ```
 
-### UNC callback
+Callback:
 
 ```lua
-local AllowedNames = {
-    PlayerNameHere = true
-}
+local Allowed = { PlayerNameHere = true }
 
 local Window = Qwen:CreateWindow({
     Title = "Verified Hub",
     UNC = {
-        Enabled = true,
-        Auto = true,
-        Value = LocalPlayer.Name,
-        Function = function(value)
-            return AllowedNames[value] == true
-        end
-    }
+        Enabled = true, Auto = true, Value = LocalPlayer.Name,
+        Function = function(value) return Allowed[value] == true end,
+    },
 })
 ```
 
-### UNC badge states
+If Settings is enabled, the Settings tab gains a **Retry UNC Check** button.
 
-The badge shows:
+---
 
-| State | Meaning |
-|---|---|
-| `UNC OK` | Passed |
-| `UNC FAIL` | Failed |
-| `UNC --` | Not checked yet |
+## 23. Settings Tab (auto)
 
-If settings are enabled, the settings tab gets:
+Enable with `Settings = { Enabled = true }` (default on). Disable with `{ Enabled = false }`.
 
-```text
-Retry UNC Check
+Contents (only what applies is shown):
+
+- **Interface** section: theme note; theme dropdown (live) *or* a "locked by developer" note; density dropdown (live); animation dropdown (live rebuild).
+- **Behavior** section: FPS Counter toggle (live), Notifications toggle (live), Watermark toggle (live), plus **Retry UNC Check** (if UNC enabled) and **Relock UI** (if key system enabled).
+
+```lua
+local Window = Qwen:CreateWindow({ Title = "Clean Hub", Settings = { Enabled = false } })
 ```
 
 ---
 
-## 21. Settings Tab
+## 24. Toolbar Chrome (visual, not developer API)
 
-The settings tab is automatic.
+The top bar is drawn, not built by you, so it adds **no new `CreateX` methods**. It contains:
 
-Enable it:
+- Brand `Q` square + title + subtitle (left)
+- FPS chip (center, only if `Stats.FPS`)
+- Three‑line button → toggles the tab rail
+- Speech‑bubble button → opens notification history
+- **Options** pill → jumps to the Settings tab (if enabled)
+- Ring button → cycles theme (hidden when locked)
+- Red `✕` → closes the window
 
-```lua
-Settings = {
-    Enabled = true
-}
-```
-
-Disable it:
-
-```lua
-Settings = {
-    Enabled = false
-}
-```
-
-Example:
-
-```lua
-local Window = Qwen:CreateWindow({
-    Title = "Clean Hub",
-    Settings = {
-        Enabled = false
-    }
-})
-```
-
-### What settings tab contains
-
-When enabled, it can show:
-
-- theme info
-- theme dropdown, if not locked
-- density dropdown
-- animation dropdown
-- FPS toggle
-- notifications toggle
-- UNC retry button, if UNC enabled
-- relock button, if key system enabled
-
-Important:
-
-- FPS toggle works live.
-- Notifications toggle works live.
-- Theme dropdown currently tells user to reload; it does not fully rebuild live in this raw build.
-- Density and animation are stored preferences for now.
+These are internal; you never call them. They exist so the hub *looks* like the reference dashboard out of the box.
 
 ---
 
-## 22. Locking And Hiding Controls
+## 25. Locking & Hiding Controls
 
-### Hide a widget
-
-Use:
+`Hidden = true` removes a row from view entirely. `Locked = true` shows it disabled with a border (currently supported on **buttons** and **toggles**). For sliders/dropdowns/inputs/keybinds, use `Hidden` for now.
 
 ```lua
-Hidden = true
+MainSection:CreateButton({ Name = "Debug", Hidden = true })
+MainSection:CreateToggle({ Name = "Premium", Locked = true })
 ```
-
-Example:
-
-```lua
-MainSection:CreateButton({
-    Name = "Debug",
-    Hidden = true
-})
-```
-
-The widget is not shown.
-
-### Lock a button or toggle
-
-Use:
-
-```lua
-Locked = true
-```
-
-Example:
-
-```lua
-MainSection:CreateToggle({
-    Name = "Premium",
-    Locked = true
-})
-```
-
-Current locked support:
-
-| Widget | Locked supported? |
-|---|---|
-| Button | Yes |
-| Toggle | Yes |
-| Slider | Not yet |
-| Dropdown | Not yet |
-| Input | Not yet |
-| Keybind | Not yet |
-
-For now, use `Hidden = true` for widgets you do not want users to see.
 
 ---
 
-## 23. Common Developer Pattern
+## 26. Recommended State Pattern
 
-Usually you want to store values in a table.
-
-```lua
-local state = {
-    enabled = false,
-    fov = 60,
-    mode = "Normal"
-}
-```
-
-Then connect widgets to it:
+Store values in a table, wire widgets to it:
 
 ```lua
-MainSection:CreateToggle({
-    Name = "Enable",
-    Default = false,
-    Function = function(value)
-        state.enabled = value
-    end
-})
+local state = { enabled = false, fov = 60, mode = "Normal" }
 
-MainSection:CreateSlider({
-    Name = "FOV",
-    Min = 0,
-    Max = 120,
-    Default = 60,
-    Function = function(value)
-        state.fov = value
-    end
-})
-
-MainSection:CreateDropdown({
-    Name = "Mode",
-    Values = { "Normal", "Fast", "Slow" },
-    Default = "Normal",
-    Function = function(value)
-        state.mode = value
-    end
-})
-
+MainSection:CreateToggle({ Name = "Enable", Default = false, Function = function(v) state.enabled = v end })
+MainSection:CreateSlider({ Name = "FOV", Min = 0, Max = 120, Default = 60, Function = function(v) state.fov = v end })
+MainSection:CreateDropdown({ Name = "Mode", Values = { "Normal", "Fast", "Slow" }, Default = "Normal", Function = function(v) state.mode = v end })
 MainSection:CreateButton({
     Name = "Apply",
     Function = function()
-        Window:Notify({
-            Title = "Applied",
-            Message = state.mode .. " | FOV: " .. tostring(state.fov),
-            Type = "Success"
-        })
+        Window:Notify({ Title = "Applied", Message = state.mode .. " | FOV " .. tostring(state.fov), Type = "Success" })
     end
 })
 ```
 
-This is the cleanest way to build.
-
 ---
 
-## 24. Full Example Hub
+## 27. Full Example Hub (multi‑column, live theme, FPS)
 
 ```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
-local state = {
-    mainEnabled = false,
-    fov = 60,
-    smoothness = 1,
-    mode = "Normal"
-}
+local state = { mainEnabled = false, fov = 60, smoothness = 1, mode = "Normal" }
 
 local Window = Qwen:CreateWindow({
     Title = "Qwen Example Hub",
-    Subtitle = "Docs Demo",
+    Subtitle = "docs demo",
     Theme = "VapeDark",
     Device = "Auto",
-    Width = 600,
-    Height = 400,
-    Settings = {
-        Enabled = true
-    },
-    Stats = {
-        FPS = true
-    },
-    Notifications = {
-        Enabled = true,
-        Duration = 4,
-        MaxVisible = 4
-    }
+    Density = "Comfort",
+    Width = 660,
+    Height = 440,
+    Settings = { Enabled = true },
+    Stats = { FPS = true },
+    Notifications = { Enabled = true, Duration = 4, MaxVisible = 4 },
 })
 
 local MainTab = Window:CreateTab("Main")
@@ -1344,94 +815,33 @@ local VisualTab = Window:CreateTab("Visuals")
 
 local MainSection = MainTab:CreateSection("Main Controls")
 local AimSection = AimTab:CreateSection("Aim Controls")
-local VisualSection = VisualTab:CreateSection("Visual Controls")
+local VisualSection = VisualTab:CreateSection("Visual Effects")
 
-MainSection:CreateToggle({
-    Name = "Enable Hub",
-    Description = "Turns the main feature on.",
-    Default = false,
-    Function = function(value)
-        state.mainEnabled = value
-    end
-})
+MainSection:CreateToggle({ Name = "Enable Hub", Description = "Turns the main feature on.", Default = false, Function = function(v) state.mainEnabled = v end })
+MainSection:CreateButton({ Name = "Reset", Description = "Restores defaults.", Function = function()
+    state.fov = 60; state.smoothness = 1; state.mode = "Normal"
+    Window:Notify({ Title = "Reset", Message = "Values restored.", Type = "Info" })
+end })
 
-MainSection:CreateButton({
-    Name = "Reset",
-    Description = "Resets stored values.",
-    Function = function()
-        state.fov = 60
-        state.smoothness = 1
-        state.mode = "Normal"
-        Window:Notify({
-            Title = "Reset",
-            Message = "Values restored.",
-            Type = "Info"
-        })
-    end
-})
+AimSection:CreateSlider({ Name = "FOV", Min = 0, Max = 120, Step = 1, Default = 60, Suffix = " deg", Function = function(v) state.fov = v end })
+AimSection:CreateSlider({ Name = "Smoothness", Min = 0.1, Max = 5, Step = 0.1, Decimals = 1, Default = 1, Function = function(v) state.smoothness = v end })
+AimSection:CreateDropdown({ Name = "Aim Mode", Values = { "Normal", "Fast", "Slow" }, Default = "Normal", Function = function(v) state.mode = v end })
 
-AimSection:CreateSlider({
-    Name = "FOV",
-    Min = 0,
-    Max = 120,
-    Step = 1,
-    Default = 60,
-    Suffix = " degrees",
-    Function = function(value)
-        state.fov = value
-    end
-})
-
-AimSection:CreateSlider({
-    Name = "Smoothness",
-    Min = 0.1,
-    Max = 5,
-    Step = 0.1,
-    Decimals = 1,
-    Default = 1,
-    Function = function(value)
-        state.smoothness = value
-    end
-})
-
-AimSection:CreateDropdown({
-    Name = "Aim Mode",
-    Values = { "Normal", "Fast", "Slow" },
-    Default = "Normal",
-    Function = function(value)
-        state.mode = value
-    end
-})
-
-VisualSection:CreateToggle({
-    Name = "Show Box",
-    Default = true
-})
-
-VisualSection:CreateToggle({
-    Name = "Show Name",
-    Default = true
-})
-
-VisualSection:CreateToggle({
-    Name = "Show Health",
-    Default = false
-})
-
+VisualSection:CreateToggle({ Name = "Show Box", Default = true })
+VisualSection:CreateToggle({ Name = "Show Name", Default = true })
+VisualSection:CreateToggle({ Name = "Show Health", Default = false })
 VisualSection:CreateDivider()
-
-VisualSection:CreateLabel({
-    Text = "Visual options are stored locally in this example.",
-    Variant = "Muted"
-})
+VisualSection:CreateLabel({ Text = "Visual options stored locally in this example.", Variant = "Muted" })
 ```
+
+Because sections wrap, this renders as side‑by‑side columns on desktop — exactly the reference layout.
 
 ---
 
-## 25. Locked Theme + Key System Example
+## 28. Locked Theme + Key System Example
 
 ```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1448,645 +858,193 @@ local Window = Qwen:CreateWindow({
         Attempts = 3,
         Cooldown = 20,
         CopyText = "https://your-key-link_here",
-        HelpText = "https://your-help-link_here"
+        HelpText = "https://your-help-link_here",
     },
-    Settings = {
-        Enabled = true
-    }
+    Settings = { Enabled = true },
 })
 
 local MainTab = Window:CreateTab("Main")
 local MainSection = MainTab:CreateSection("Controls")
-
-MainSection:CreateToggle({
-    Name = "Feature",
-    Default = false
-})
-
-MainSection:CreateButton({
-    Name = "Test Notification",
-    Function = function()
-        Window:Notify({
-            Title = "Working",
-            Message = "Key system and locked theme are active.",
-            Type = "Success"
-        })
-    end
-})
+MainSection:CreateToggle({ Name = "Feature", Default = false })
+MainSection:CreateButton({ Name = "Test", Function = function() Window:Notify({ Title = "Working", Message = "Locked theme + key active.", Type = "Success" }) end })
 ```
 
 ---
 
-## 26. Mobile Compact Example
+## 29. Mobile Compact Example
 
 ```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
-local Window = Qwen:CreateWindow({
-    Title = "Mobile Hub",
-    Theme = "MidnightPurple",
-    Device = "Mobile",
-    Settings = {
-        Enabled = true
-    },
-    Stats = {
-        FPS = true
-    }
-})
+local Window = Qwen:CreateWindow({ Title = "Mobile Hub", Theme = "MidnightPurple", Device = "Mobile", Settings = { Enabled = true }, Stats = { FPS = true } })
 
 local MainTab = Window:CreateTab("Main")
-local MainSection = MainTab:CreateSection("Touch Controls")
-
-MainSection:CreateToggle({
-    Name = "Large Toggle",
-    Default = false
-})
-
-MainSection:CreateSlider({
-    Name = "Large Slider",
-    Min = 0,
-    Max = 100,
-    Default = 50
-})
-
-MainSection:CreateButton({
-    Name = "Big Button",
-    Function = function()
-        Window:Notify({
-            Title = "Mobile",
-            Message = "Touch layout active.",
-            Type = "Info"
-        })
-    end
-})
+local S = MainTab:CreateSection("Touch Controls")
+S:CreateToggle({ Name = "Large Toggle", Default = false })
+S:CreateSlider({ Name = "Large Slider", Min = 0, Max = 100, Default = 50 })
+S:CreateButton({ Name = "Big Button", Function = function() Window:Notify({ Title = "Mobile", Message = "Touch layout active.", Type = "Info" }) end })
 ```
 
 ---
 
-## 27. Notification Tester Example
+## 30. Notification Tester Example
+
+```lua
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
+local Qwen = loadstring(game:HttpGet(RawGistURL))()
+
+local Window = Qwen:CreateWindow({ Title = "Notification Tester", Theme = "NeonViolet" })
+local Tab = Window:CreateTab("Alerts")
+local S = Tab:CreateSection("Types")
+
+S:CreateButton({ Name = "Info", Function = function() Window:Notify({ Title = "Info", Message = "Normal.", Type = "Info" }) end })
+S:CreateButton({ Name = "Success", Function = function() Window:Notify({ Title = "Success", Message = "Completed.", Type = "Success" }) end })
+S:CreateButton({ Name = "Warning", Function = function() Window:Notify({ Title = "Warning", Message = "Check settings.", Type = "Warning" }) end })
+S:CreateButton({ Name = "Danger", Function = function() Window:Notify({ Title = "Danger", Message = "Failed.", Type = "Danger" }) end })
+S:CreateButton({ Name = "Open History", Function = function() Window:OpenHistory() end })
+```
+
+---
+
+## 31. Media Example (image + progress + input)
+
+```lua
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
+local Qwen = loadstring(game:HttpGet(RawGistURL))()
+
+local Window = Qwen:CreateWindow({ Title = "Media Example", Theme = "EmeraldNight" })
+local Tab = Window:CreateTab("Media")
+local S = Tab:CreateSection("Widgets")
+
+S:CreateImage({ Source = 123456789, Width = 160, Height = 100 })
+local Bar = S:CreateProgress({ Name = "Download", Value = 0 })
+S:CreateButton({ Name = "+20%", Function = function() Bar:Set(math.min(Bar:Get() + 0.2, 1)) end })
+S:CreateButton({ Name = "Reset", Function = function() Bar:Set(0) end })
+S:CreateInput({ Name = "File Name", Placeholder = "model.txt", Default = "model.txt", MaxLength = 32 })
+```
+
+---
+
+## 32. API Cheat Sheet
+
+**Window**
+
+```lua
+Qwen:CreateWindow(config) -> Window
+Window:CreateTab(name[, icon]) -> Tab
+Window:Notify(options)
+Window:GetHistory() -> table
+Window:Open() / Window:Close() / Window:Destroy()
+Window:SetTheme(name)            -- NEW (live)
+Window:GetTheme() -> string      -- NEW
+Window:SetDensity(name)          -- NEW (live)
+Window:SetAnimation(name)        -- NEW (rebuild)
+Window:ToggleTabs()              -- NEW (show/hide rail)
+Window:OpenHistory()             -- NEW
+```
+
+**Tab**
+
+```lua
+Tab:CreateSection(name) -> Section
+```
+
+**Section**
+
+```lua
+Section:CreateButton(cfg) / CreateToggle(cfg) / CreateSlider(cfg) / CreateDropdown(cfg)
+Section:CreateInput(cfg) / CreateKeybind(cfg) / CreateLabel(cfg) / CreateDivider()
+Section:CreateImage(cfg) / CreateProgress(cfg)
+Section:SetCollapsed(bool)       -- NEW
+```
+
+**Widget returns**
+
+| Widget | Methods |
+|---|---|
+| Button | `SetText`, `SetDisabled` |
+| Toggle | `Set`, `Get` |
+| Slider | `Set`, `Get` |
+| Dropdown | `Set`, `Get` |
+| Input | `Set`, `Get` |
+| Keybind | `Set`, `Get` |
+| Progress | `Set`, `Get` |
+| Label / Divider / Image | the instance itself |
+
+---
+
+## 33. What Changed From the Previous Build
+
+- Default `VapeDark` recoloured to **amber** to match the reference dashboard.
+- Sections now **wrap into multiple columns** on desktop/tablet (single column on mobile).
+- **Collapsible sections** with chevron + `SetCollapsed`.
+- **Drawn monochrome icons** (accent squares, speech bubble, ring, three‑line menu) replace emoji glyphs — cleaner, more "human".
+- **Live theme switching** (`SetTheme` / `GetTheme` / toolbar ring / Settings dropdown) recolours the entire shell instantly.
+- **Live density switching** (`SetDensity` / Settings dropdown) resizes rows + columns instantly.
+- **Animation** stored + triggers rebuild (`SetAnimation`).
+- **Screen‑clamped dropdowns** that flip above the row near the bottom edge.
+- **Hover accent line** on buttons; **active‑row tint** on toggles.
+- **Watermark** option + live Settings toggle.
+- **Top toolbar** chrome: brand square, title/subtitle, centered FPS chip, rail toggle, history bubble, Options pill, theme ring, close.
+- Notifier, key screen, and FPS chip now **follow the live theme**.
+- New window methods: `SetTheme`, `GetTheme`, `SetDensity`, `SetAnimation`, `ToggleTabs`, `OpenHistory`.
+- New section method: `SetCollapsed`.
+- Clean teardown on `Destroy` (no leaked connections).
+
+No new widget‑creation methods were added, so old scripts and old docs still build the same way.
+
+---
+
+## 34. Troubleshooting
+
+**UI does not load** — confirm the raw URL is the direct `…/raw/<commit>/QwenUi.lua` link and HTTP is enabled. If `Qwen` is `nil`, the URL is wrong or blocked.
+
+**Window missing** — key system may be waiting for a key; or the window was closed; or the executor cannot parent to `CoreGui` (it falls back to `PlayerGui`); or the script errored before `CreateWindow`.
+
+**Custom rows disappear after changing theme/density** — apply the 6‑line **Live Rebuild Patch** in §5. Without it, a rebuild recreates section panels but not the rows inside them.
+
+**Theme won't change** — it is locked (`ThemeLock = true` or `LockedTheme` set). That is intended; the cycle ring and dropdown are hidden/replaced.
+
+**Settings tab missing** — set `Settings = { Enabled = true }`.
+
+**FPS counter missing** — set `Stats = { FPS = true }` or enable it in Settings.
+
+**Notifications not showing** — set `Notifications = { Enabled = true }`; `Duration = 0` makes them sticky until closed.
+
+**Button does nothing** — use `Function` (or the alias `Callback`).
+
+**Toggle/slider not updating your variable** — read the value passed into `Function` (`function(state)` / `function(value)`).
+
+**Slider value looks odd** — set `Step = 1` for whole numbers, or `Step = 0.1, Decimals = 1` for decimals.
+
+**Dropdown opens off‑screen** — it is now clamped; if a row is at the very bottom the list flips above it automatically.
+
+**Tab icons not showing** — `CreateTab(name, icon)` accepts the argument but icons are auto‑drawn squares in this build; asset ids are not rendered yet.
+
+---
+
+## 35. Final Copy‑Paste Template
 
 ```lua
 local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
-    Title = "Notification Tester",
-    Theme = "NeonViolet"
-})
-
-local Tab = Window:CreateTab("Alerts")
-local Section = Tab:CreateSection("Types")
-
-Section:CreateButton({
-    Name = "Info",
-    Function = function()
-        Window:Notify({
-            Title = "Info",
-            Message = "Normal message.",
-            Type = "Info"
-        })
-    end
-})
-
-Section:CreateButton({
-    Name = "Success",
-    Function = function()
-        Window:Notify({
-            Title = "Success",
-            Message = "Action completed.",
-            Type = "Success"
-        })
-    end
-})
-
-Section:CreateButton({
-    Name = "Warning",
-    Function = function()
-        Window:Notify({
-            Title = "Warning",
-            Message = "Check your settings.",
-            Type = "Warning"
-        })
-    end
-})
-
-Section:CreateButton({
-    Name = "Danger",
-    Function = function()
-        Window:Notify({
-            Title = "Danger",
-            Message = "Something failed.",
-            Type = "Danger"
-        })
-    end
-})
-```
-
----
-
-## 28. Progress + Image + Input Example
-
-```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
-local Qwen = loadstring(game:HttpGet(RawGistURL))()
-
-local Window = Qwen:CreateWindow({
-    Title = "Media Example",
-    Theme = "EmeraldNight"
-})
-
-local Tab = Window:CreateTab("Media")
-local Section = Tab:CreateSection("Widgets")
-
-Section:CreateImage({
-    Source = 123456789,
-    Width = 160,
-    Height = 100
-})
-
-local Bar = Section:CreateProgress({
-    Name = "Download",
-    Value = 0
-})
-
-Section:CreateButton({
-    Name = "Add 20%",
-    Function = function()
-        Bar:Set(math.min(Bar:Get() + 0.2, 1))
-    end
-})
-
-Section:CreateButton({
-    Name = "Reset",
-    Function = function()
-        Bar:Set(0)
-    end
-})
-
-Section:CreateInput({
-    Name = "File Name",
-    Placeholder = "model.txt",
-    Default = "model.txt",
-    MaxLength = 32
-})
-```
-
----
-
-## 29. API Cheat Sheet
-
-### Window
-
-```lua
-Qwen:CreateWindow(config)
-```
-
-Returns:
-
-```lua
-Window:CreateTab(name)
-Window:Notify(options)
-Window:GetHistory()
-Window:Open()
-Window:Close()
-Window:Destroy()
-```
-
-### Tab
-
-```lua
-Window:CreateTab(name)
-```
-
-Returns:
-
-```lua
-Tab:CreateSection(name)
-```
-
-### Section
-
-```lua
-Tab:CreateSection(name)
-```
-
-Returns:
-
-```lua
-Section:CreateButton(config)
-Section:CreateToggle(config)
-Section:CreateSlider(config)
-Section:CreateDropdown(config)
-Section:CreateInput(config)
-Section:CreateKeybind(config)
-Section:CreateLabel(config)
-Section:CreateDivider()
-Section:CreateImage(config)
-Section:CreateProgress(config)
-```
-
----
-
-## 30. Widget Quick Reference
-
-### Button
-
-```lua
-Section:CreateButton({
-    Name = "Button",
-    Description = "Optional",
-    Function = function() end,
-    CopyText = "optional copy",
-    Notify = { Title = "Done", Type = "Success" },
-    Disabled = false,
-    Locked = false,
-    Hidden = false
-})
-```
-
-### Toggle
-
-```lua
-Section:CreateToggle({
-    Name = "Toggle",
-    Description = "Optional",
-    Default = false,
-    Function = function(value) end,
-    Locked = false,
-    Hidden = false
-})
-```
-
-### Slider
-
-```lua
-Section:CreateSlider({
-    Name = "Slider",
-    Description = "Optional",
-    Min = 0,
-    Max = 100,
-    Step = 1,
-    Decimals = 0,
-    Default = 50,
-    Suffix = "",
-    Function = function(value) end,
-    Hidden = false
-})
-```
-
-### Dropdown
-
-```lua
-Section:CreateDropdown({
-    Name = "Dropdown",
-    Values = { "A", "B" },
-    Default = "A",
-    Function = function(value) end,
-    Hidden = false
-})
-```
-
-### Input
-
-```lua
-Section:CreateInput({
-    Name = "Input",
-    Placeholder = "Text",
-    Default = "",
-    Type = "Text",
-    Min = nil,
-    Max = nil,
-    MaxLength = nil,
-    Function = function(value) end,
-    Hidden = false
-})
-```
-
-### Keybind
-
-```lua
-Section:CreateKeybind({
-    Name = "Keybind",
-    Default = Enum.KeyCode.RightControl,
-    Function = function(binding) end,
-    Hidden = false
-})
-```
-
-### Label
-
-```lua
-Section:CreateLabel({
-    Text = "Note",
-    Variant = "Muted",
-    Font = Enum.Font.Gotham,
-    Size = 12
-})
-```
-
-### Image
-
-```lua
-Section:CreateImage({
-    Source = 123456789,
-    Width = 140,
-    Height = 90,
-    ScaleType = Enum.ScaleType.Fit
-})
-```
-
-### Progress
-
-```lua
-Section:CreateProgress({
-    Name = "Progress",
-    Value = 0.5,
-    Function = function(value) end
-})
-```
-
----
-
-## 31. Troubleshooting
-
-### UI does not load
-
-Check the raw URL. It must be the direct raw link.
-
-Use:
-
-```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
-local Qwen = loadstring(game:HttpGet(RawGistURL))()
-```
-
-If `Qwen` is nil, the URL is wrong or HTTP is blocked.
-
----
-
-### Window does not appear
-
-Possible reasons:
-
-- key system is enabled and waiting for key
-- window was closed
-- executor cannot parent to `CoreGui`
-- script errored before `CreateWindow`
-
-The library tries `CoreGui` first, then falls back to `PlayerGui`.
-
----
-
-### Theme does not change in settings
-
-If theme is locked, it will not change.
-
-If theme is not locked, the current build may require reload because live theme rebuilding is not fully connected yet.
-
----
-
-### Settings tab missing
-
-Check:
-
-```lua
-Settings = {
-    Enabled = true
-}
-```
-
----
-
-### FPS counter missing
-
-Check:
-
-```lua
-Stats = {
-    FPS = true
-}
-```
-
-Or enable it in settings tab.
-
----
-
-### Notifications not appearing
-
-Check:
-
-```lua
-Notifications = {
-    Enabled = true
-}
-```
-
-Also check:
-
-```lua
-Duration = 4
-```
-
-If duration is `0`, toast stays until manually closed.
-
----
-
-### Button does nothing
-
-Use `Function`:
-
-```lua
-Function = function()
-    -- code
-end
-```
-
-`Callback` also works as an alias:
-
-```lua
-Callback = function()
-    -- code
-end
-```
-
----
-
-### Toggle does not update variable
-
-Make sure you use the value passed into the function:
-
-```lua
-Function = function(state)
-    myValue = state
-end
-```
-
----
-
-### Slider value is weird
-
-Set step correctly.
-
-For whole numbers:
-
-```lua
-Step = 1
-```
-
-For decimals:
-
-```lua
-Step = 0.1,
-Decimals = 1
-```
-
----
-
-### Dropdown popup appears in wrong place
-
-Current dropdown popup opens below the row using absolute position. If the row is near the bottom of the screen, the popup may go off-screen. Use shorter lists or place dropdowns higher in the section.
-
----
-
-## 32. Recommended Build Style
-
-Use this pattern:
-
-```lua
-local state = {}
-
-local Window = Qwen:CreateWindow({
-    Title = "Hub"
-})
-
-local Tab = Window:CreateTab("Main")
-local Section = Tab:CreateSection("Options")
-
-Section:CreateToggle({
-    Name = "Feature",
-    Default = false,
-    Function = function(value)
-        state.feature = value
-    end
-})
-
-Section:CreateSlider({
-    Name = "Value",
-    Min = 0,
-    Max = 100,
-    Default = 50,
-    Function = function(value)
-        state.value = value
-    end
-})
-
-Section:CreateButton({
-    Name = "Apply",
-    Function = function()
-        Window:Notify({
-            Title = "Applied",
-            Type = "Success"
-        })
-    end
-})
-```
-
-This keeps your script clean and easy to expand.
-
----
-
-## 33. Important Notes For This Raw Build
-
-This documentation matches the current raw file behavior.
-
-### Currently active
-
-- window creation
-- tabs
-- sections
-- buttons
-- toggles
-- sliders
-- dropdowns
-- inputs
-- keybinds
-- labels
-- dividers
-- images
-- progress bars
-- notifications
-- notification history panel
-- FPS chip
-- key system lock screen
-- UNC badge
-- settings tab
-- theme locking
-- device auto detection
-- mobile bottom layout
-- desktop draggable window
-- hidden widgets
-- locked buttons/toggles
-
-### Currently stored but limited
-
-- `Density`
-- `Animation`
-- `Author`
-- `Version`
-- `Watermark`
-- `Permissions`
-
-These are accepted in config, but not all of them fully affect the UI in this raw build yet.
-
----
-
-## 34. Final Simple Template
-
-Copy this and edit it:
-
-```lua
-local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
-local Qwen = loadstring(game:HttpGet(RawGistURL))()
-
-local Window = Qwen:CreateWindow({
     Title = "My Hub",
     Theme = "VapeDark",
     Device = "Auto",
-    Settings = {
-        Enabled = true
-    },
-    Stats = {
-        FPS = true
-    }
+    Density = "Comfort",
+    Settings = { Enabled = true },
+    Stats = { FPS = true },
 })
 
 local MainTab = Window:CreateTab("Main")
 local MainSection = MainTab:CreateSection("Main")
 
-MainSection:CreateToggle({
-    Name = "Enable",
-    Default = false,
-    Function = function(value)
-    end
-})
+MainSection:CreateToggle({ Name = "Enable", Default = false, Function = function(v) end })
+MainSection:CreateSlider({ Name = "Amount", Min = 0, Max = 100, Default = 50, Function = function(v) end })
+MainSection:CreateButton({ Name = "Action", Function = function() Window:Notify({ Title = "Action", Message = "Done.", Type = "Success" }) end })
+```
 
-MainSection:CreateSlider({
-    Name = "Amount",
-    Min = 0,
-    Max = 100,
-    Default = 50,
-    Function = function(value)
-    end
-})
-
-MainSection:CreateButton({
-    Name = "Action",
-    Function = function()
-        Window:Notify({
-            Title = "Action",
-            Message = "Done.",
-            Type = "Success"
-        })
-    end
-})
+---
