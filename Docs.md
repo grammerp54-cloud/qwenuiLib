@@ -4,7 +4,7 @@
 **Raw loader URL:**
 
 ```lua
-https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua
+[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)
 ```
 
 Qwen UI is a Lua interface library made to be loaded with one line, then built with simple calls like:
@@ -27,7 +27,7 @@ The goal is: **easy to build, clean to read, better than basic UI libraries, and
 Every script starts like this:
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 ```
 
@@ -48,7 +48,7 @@ That is the minimum start.
 ## 2. Smallest Working Example
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1308,7 +1308,7 @@ This is the cleanest way to build.
 ## 24. Full Example Hub
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local state = {
@@ -1431,7 +1431,7 @@ VisualSection:CreateLabel({
 ## 25. Locked Theme + Key System Example
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1480,7 +1480,7 @@ MainSection:CreateButton({
 ## 26. Mobile Compact Example
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1527,7 +1527,7 @@ MainSection:CreateButton({
 ## 27. Notification Tester Example
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1588,7 +1588,7 @@ Section:CreateButton({
 ## 28. Progress + Image + Input Example
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
@@ -1817,7 +1817,7 @@ Check the raw URL. It must be the direct raw link.
 Use:
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 ```
 
@@ -2046,7 +2046,7 @@ These are accepted in config, but not all of them fully affect the UI in this ra
 Copy this and edit it:
 
 ```lua
-local RawGistURL = "https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua"
+local RawGistURL = "[https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/9cd94b576db1d72f48c9a07ff39c4fdeb9e5a408/QwenUi.lua](https://gist.githubusercontent.com/grammerp54-cloud/3757d93037913683434e8ae25fde0dcf/raw/6b3fbb8b8ea28a064427871009380bf992a03e13/QwenUi.lua)"
 local Qwen = loadstring(game:HttpGet(RawGistURL))()
 
 local Window = Qwen:CreateWindow({
